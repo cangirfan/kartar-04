@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\ManagementController;
 use App\Http\Controllers\Admin\UmkmController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 // Public Front-End Routes
@@ -37,6 +38,7 @@ Route::middleware('auth')->group(function () {
 // Admin panel routes (guarded by auth and admin role)
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::resource('categories', CategoryController::class)->except(['show']);
     Route::resource('posts', PostController::class);
     Route::resource('announcements', AnnouncementController::class);
     Route::resource('galleries', GalleryController::class)->except(['show']);

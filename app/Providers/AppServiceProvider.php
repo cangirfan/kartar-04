@@ -30,6 +30,8 @@ class AppServiceProvider extends ServiceProvider
                 'banner' => null,
                 'donation_qr' => 'settings/qris_mockup.png',
                 'address' => 'Jl. Pemuda No. 12',
+                'latitude' => null,
+                'longitude' => null,
                 'whatsapp' => '628123456789',
                 'email' => 'kartar@example.com'
             ]);
@@ -37,3 +39,4 @@ class AppServiceProvider extends ServiceProvider
         }
     }
 }
+

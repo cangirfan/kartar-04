@@ -36,6 +36,9 @@
         h1, h2, h3, h4, h5, h6 {
             font-family: 'Outfit', sans-serif;
         }
+        [x-cloak] {
+            display: none !important;
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 flex flex-col min-h-screen transition-colors duration-300">
@@ -209,11 +212,15 @@
     </footer>
 
     <!-- Donation Modal -->
-    <div x-data="{ showModal: false }" 
-         @open-donation-modal.window="showModal = true" 
-         @keydown.escape.window="showModal = false"
-         class="relative z-50" 
-         style="display: none;" 
+    <div x-data="{ 
+            showModal: false,
+            open() { this.showModal = true },
+            close() { this.showModal = false },
+         }" 
+         @open-donation-modal.window="open()" 
+         @keydown.escape.window="close()"
+         class="fixed inset-0 z-50" 
+         x-cloak
          x-show="showModal" 
          x-transition:enter="transition ease-out duration-300"
          x-transition:enter-start="opacity-0"
@@ -223,12 +230,13 @@
          x-transition:leave-end="opacity-0">
         
         <!-- Backdrop -->
-        <div class="fixed inset-0 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-sm" @click="showModal = false"></div>
+        <div class="fixed inset-0 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-sm" aria-hidden="true"></div>
 
         <!-- Modal Wrapper -->
-        <div class="fixed inset-0 overflow-y-auto flex items-center justify-center p-4">
+        <div class="fixed inset-0 overflow-y-auto flex items-center justify-center p-4" @click.self="close()">
             <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full border border-slate-100 dark:border-slate-800 shadow-2xl p-6 sm:p-8 transform transition-all relative"
                  x-show="showModal"
+                 @click.stop
                  x-transition:enter="transition ease-out duration-300"
                  x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                  x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
@@ -237,7 +245,7 @@
                  x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
                 
                 <!-- Close Button -->
-                <button @click="showModal = false" class="absolute top-4 right-4 p-2 rounded-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                <button type="button" @click.stop="close()" aria-label="Tutup modal donasi" class="absolute top-4 right-4 p-2 rounded-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
@@ -368,3 +376,4 @@
     </script>
 </body>
 </html>
+

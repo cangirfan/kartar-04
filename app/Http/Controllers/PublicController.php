@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\Announcement;
 use App\Models\Gallery;
+use App\Models\Category;
 use App\Models\Management;
 use App\Models\Umkm;
 use Illuminate\Http\Request;
@@ -43,7 +44,7 @@ class PublicController extends Controller
         }
 
         $posts = $query->latest('published_at')->paginate(6);
-        $categories = ['Kerja Bakti', '17 Agustus', 'Santunan', 'Olahraga', 'Event Pemuda'];
+        $categories = Category::active()->ordered()->pluck('name');
 
         return view('public.posts', compact('posts', 'categories'));
     }
@@ -93,8 +94,7 @@ class PublicController extends Controller
 
         $galleries = $query->latest()->paginate(6);
         
-        // Extract unique categories from galleries for filtering
-        $categories = Gallery::select('category')->distinct()->pluck('category')->toArray();
+        $categories = Category::active()->ordered()->pluck('name');
 
         return view('public.gallery', compact('galleries', 'categories'));
     }

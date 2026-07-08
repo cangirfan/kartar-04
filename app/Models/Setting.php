@@ -12,7 +12,10 @@ class Setting extends Model
         'banner',
         'donation_qr',
         'address',
+        'latitude',
+        'longitude',
         'whatsapp',
         'email',
     ];
 }
+

@@ -60,6 +60,29 @@
                                 <p class="text-xs text-red-500 font-semibold">{{ $message }}</p>
                             @enderror
                         </div>
+
+                        <!-- Map Coordinates -->
+                        <div class="space-y-1">
+                            <label for="latitude" class="block text-sm font-bold text-gray-700 dark:text-gray-300">Latitude Peta</label>
+                            <input type="number" step="any" name="latitude" id="latitude" value="{{ old('latitude', $setting->latitude) }}"
+                                   placeholder="-6.200000"
+                                   class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600">
+                            <p class="text-xs text-gray-400">Isi koordinat agar pin peta tepat di lokasi sekretariat.</p>
+                            @error('latitude')
+                                <p class="text-xs text-red-500 font-semibold">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div class="space-y-1">
+                            <label for="longitude" class="block text-sm font-bold text-gray-700 dark:text-gray-300">Longitude Peta</label>
+                            <input type="number" step="any" name="longitude" id="longitude" value="{{ old('longitude', $setting->longitude) }}"
+                                   placeholder="106.816666"
+                                   class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600">
+                            <p class="text-xs text-gray-400">Ambil dari Google Maps dengan klik kanan titik lokasi, lalu salin angka koordinat.</p>
+                            @error('longitude')
+                                <p class="text-xs text-red-500 font-semibold">{{ $message }}</p>
+                            @enderror
+                        </div>
                     </div>
 
                     <hr class="border-gray-100 dark:border-gray-750">
@@ -133,3 +156,4 @@
         </div>
     </div>
 </x-app-layout>
+

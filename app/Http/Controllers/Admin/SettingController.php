@@ -19,6 +19,8 @@ class SettingController extends Controller
         $setting = Setting::first() ?? Setting::create([
             'website_name' => 'Karang Taruna RT 05',
             'address' => 'Jl. Pemuda No. 12',
+            'latitude' => null,
+            'longitude' => null,
             'whatsapp' => '628123456789',
             'email' => 'kartar@example.com',
             'donation_qr' => 'settings/qris_mockup.png',
@@ -40,6 +42,8 @@ class SettingController extends Controller
         $request->validate([
             'website_name' => 'required|string|max:255',
             'address' => 'required|string',
+            'latitude' => 'nullable|numeric|between:-90,90',
+            'longitude' => 'nullable|numeric|between:-180,180',
             'whatsapp' => 'required|string|max:25',
             'email' => 'required|email|max:255',
             'logo' => 'nullable|image|max:1024',
@@ -135,6 +139,8 @@ class SettingController extends Controller
         $setting->fill([
             'website_name' => $request->website_name,
             'address' => $request->address,
+            'latitude' => $request->filled('latitude') ? $request->latitude : null,
+            'longitude' => $request->filled('longitude') ? $request->longitude : null,
             'whatsapp' => $whatsapp,
             'email' => $request->email,
             'logo' => $logoPath,
@@ -147,3 +153,4 @@ class SettingController extends Controller
         return redirect()->route('admin.settings.edit')->with('success', 'Pengaturan website berhasil diperbarui.');
     }
 }
+

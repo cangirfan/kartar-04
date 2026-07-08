@@ -87,7 +87,12 @@
             <!-- Right Map & Embed Block -->
             <div class="lg:col-span-2 space-y-6 bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-10 border border-slate-100 dark:border-slate-800 shadow-sm">
                 <h2 class="text-2xl font-extrabold text-slate-900 dark:text-white">Peta Lokasi</h2>
-                
+                @php
+                    $hasCoordinates = filled($gSettings->latitude ?? null) && filled($gSettings->longitude ?? null);
+                    $mapQuery = $hasCoordinates
+                        ? ('loc:' . $gSettings->latitude . ',' . $gSettings->longitude)
+                        : ($gSettings->address ?? 'Jakarta');
+                @endphp
                 <div class="rounded-2xl overflow-hidden aspect-video border border-slate-150 dark:border-slate-800 shadow-inner relative">
                     <!-- OSM Dynamic Map Frame -->
                     <iframe 
@@ -97,12 +102,19 @@
                         scrolling="no" 
                         marginheight="0" 
                         marginwidth="0" 
-                        src="https://maps.google.com/maps?q={{ urlencode($gSettings->address ?? 'Jakarta') }}&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                        src="https://maps.google.com/maps?q={{ urlencode($mapQuery) }}&t=&z=17&ie=UTF8&output=embed"
                         class="absolute inset-0 w-full h-full grayscale dark:invert dark:opacity-85"
                         style="border:0;" 
                         allowfullscreen="" 
                         loading="lazy">
                     </iframe>
+                    <div class="pointer-events-none absolute left-1/2 top-1/2 z-10 flex -translate-x-1/2 -translate-y-full flex-col items-center">
+                        <span class="relative flex h-11 w-11 items-center justify-center rounded-full bg-rose-600 text-white shadow-lg shadow-rose-950/30 ring-4 ring-white dark:ring-slate-900">
+                            <span class="absolute h-14 w-14 animate-ping rounded-full bg-rose-500/30"></span>
+                            <span class="relative h-3 w-3 rounded-full bg-white"></span>
+                        </span>
+                        <span class="h-4 w-4 -translate-y-2 rotate-45 bg-rose-600 shadow-md shadow-rose-950/20"></span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -110,3 +122,4 @@
     </div>
 </div>
 @endsection
+

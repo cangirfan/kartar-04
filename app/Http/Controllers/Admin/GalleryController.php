@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Gallery;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Laravel\Facades\Image;
+use Illuminate\Validation\Rule;
 
 class GalleryController extends Controller
 {
@@ -25,7 +27,7 @@ class GalleryController extends Controller
      */
     public function create()
     {
-        $categories = ['Kerja Bakti', '17 Agustus', 'Santunan', 'Olahraga', 'Event Pemuda'];
+        $categories = Category::active()->ordered()->pluck('name');
         return view('admin.galleries.create', compact('categories'));
     }
 
@@ -36,7 +38,7 @@ class GalleryController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'category' => 'required|string|max:255',
+            'category' => ['required', 'string', Rule::exists('categories', 'name')->where('is_active', true)],
             'image' => 'required|image|max:3072',
         ]);
 
@@ -77,7 +79,7 @@ class GalleryController extends Controller
      */
     public function edit(Gallery $gallery)
     {
-        $categories = ['Kerja Bakti', '17 Agustus', 'Santunan', 'Olahraga', 'Event Pemuda'];
+        $categories = Category::active()->ordered()->pluck('name');
         return view('admin.galleries.edit', compact('gallery', 'categories'));
     }
 
@@ -88,7 +90,7 @@ class GalleryController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'category' => 'required|string|max:255',
+            'category' => ['required', 'string', Rule::exists('categories', 'name')->where('is_active', true)],
             'image' => 'nullable|image|max:3072',
         ]);
 
