@@ -44,7 +44,15 @@ class PublicController extends Controller
         }
 
         $posts = $query->latest('published_at')->paginate(6);
-        $categories = Category::active()->ordered()->pluck('name');
+        $categories = Category::active()
+            ->whereIn('name', Post::query()
+                ->select('category')
+                ->where('status', true)
+                ->whereNotNull('category')
+                ->where('category', '!=', '')
+            )
+            ->ordered()
+            ->pluck('name');
 
         return view('public.posts', compact('posts', 'categories'));
     }
@@ -94,7 +102,14 @@ class PublicController extends Controller
 
         $galleries = $query->latest()->paginate(6);
         
-        $categories = Category::active()->ordered()->pluck('name');
+        $categories = Category::active()
+            ->whereIn('name', Gallery::query()
+                ->select('category')
+                ->whereNotNull('category')
+                ->where('category', '!=', '')
+            )
+            ->ordered()
+            ->pluck('name');
 
         return view('public.gallery', compact('galleries', 'categories'));
     }
@@ -110,3 +125,5 @@ class PublicController extends Controller
         return view('public.contact');
     }
 }
+
+

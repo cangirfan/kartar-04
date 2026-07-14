@@ -108,13 +108,7 @@
                         allowfullscreen="" 
                         loading="lazy">
                     </iframe>
-                    <div class="pointer-events-none absolute left-1/2 top-1/2 z-10 flex -translate-x-1/2 -translate-y-full flex-col items-center">
-                        <span class="relative flex h-11 w-11 items-center justify-center rounded-full bg-rose-600 text-white shadow-lg shadow-rose-950/30 ring-4 ring-white dark:ring-slate-900">
-                            <span class="absolute h-14 w-14 animate-ping rounded-full bg-rose-500/30"></span>
-                            <span class="relative h-3 w-3 rounded-full bg-white"></span>
-                        </span>
-                        <span class="h-4 w-4 -translate-y-2 rotate-45 bg-rose-600 shadow-md shadow-rose-950/20"></span>
-                    </div>
+
                 </div>
             </div>
         </div>
@@ -122,4 +116,5 @@
     </div>
 </div>
 @endsection
+
 

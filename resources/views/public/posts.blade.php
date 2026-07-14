@@ -13,19 +13,67 @@
 </div>
 
 <!-- Filters & List Section -->
-<div class="py-12 bg-slate-50 dark:bg-slate-950 min-h-[50vh] transition-colors duration-300">
+<div class="py-12 bg-slate-50 dark:bg-slate-950 min-h-[50vh] transition-colors duration-300"
+     x-data="{
+         categoriesOverflow: false,
+         checkCategoryOverflow() {
+             const slider = this.$refs.categorySlider;
+             if (!slider) return;
+             this.categoriesOverflow = slider.scrollWidth > slider.clientWidth + 8;
+         },
+         scrollCategories(direction) {
+             const slider = this.$refs.categorySlider;
+             if (!slider) return;
+             slider.scrollBy({ left: direction * Math.max(220, slider.clientWidth * 0.65), behavior: 'smooth' });
+         }
+     }">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         <!-- Category Filters -->
-        <div class="flex flex-wrap items-center justify-center gap-3 bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm">
-            <span class="text-sm font-bold text-slate-400 dark:text-slate-500 mr-2 uppercase tracking-wider">Kategori:</span>
-            <a href="{{ url('/kegiatan') }}" class="px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 {{ !request()->filled('category') ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-600/10' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800' }}">
-                Semua
-            </a>
-            @foreach($categories as $category)
-                <a href="{{ url('/kegiatan?category=' . urlencode($category)) }}" class="px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 {{ request()->query('category') === $category ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-600/10' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800' }}">
-                    {{ $category }}
-                </a>
-            @endforeach
+        <div x-init="$nextTick(() => { checkCategoryOverflow(); window.addEventListener('resize', () => checkCategoryOverflow()) })"
+             class="mx-auto flex max-w-full items-center gap-3 rounded-2xl border border-slate-100 bg-white p-3 shadow-sm transition-all duration-300 dark:border-slate-800 dark:bg-slate-900 sm:p-4"
+             :class="categoriesOverflow ? 'w-full' : 'w-fit'">
+            <span class="hidden shrink-0 text-sm font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 sm:block">Kategori:</span>
+
+            <button type="button"
+                    x-show="categoriesOverflow"
+                    x-transition.opacity
+                    @click="scrollCategories(-1)"
+                    class="h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-slate-200 text-slate-500 transition-colors duration-200 hover:border-indigo-200 hover:bg-indigo-50 hover:text-indigo-600 dark:border-slate-800 dark:text-slate-400 dark:hover:border-slate-700 dark:hover:bg-slate-800 dark:hover:text-white"
+                    :class="categoriesOverflow ? 'hidden sm:inline-flex' : 'hidden'"
+                    aria-label="Geser kategori ke kiri">
+                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                </svg>
+            </button>
+
+            <div class="relative min-w-0" :class="categoriesOverflow ? 'flex-1' : 'flex-none'">
+                <div x-ref="categorySlider"
+                     class="flex gap-3 overflow-x-auto scroll-smooth whitespace-nowrap px-1 py-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                     :class="categoriesOverflow ? '' : 'justify-center'">
+                    <a href="{{ url('/kegiatan') }}"
+                       class="inline-flex shrink-0 items-center rounded-xl px-4 py-2 text-sm font-semibold transition-all duration-200 {{ !request()->filled('category') ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-600/10' : 'text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800' }}">
+                        Semua
+                    </a>
+                    @foreach($categories as $category)
+                        <a href="{{ url('/kegiatan?category=' . urlencode($category)) }}"
+                           class="inline-flex shrink-0 items-center rounded-xl px-4 py-2 text-sm font-semibold transition-all duration-200 {{ request()->query('category') === $category ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-600/10' : 'text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800' }}">
+                            {{ $category }}
+                        </a>
+                    @endforeach
+                </div>
+            </div>
+
+            <button type="button"
+                    x-show="categoriesOverflow"
+                    x-transition.opacity
+                    @click="scrollCategories(1)"
+                    class="h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-slate-200 text-slate-500 transition-colors duration-200 hover:border-indigo-200 hover:bg-indigo-50 hover:text-indigo-600 dark:border-slate-800 dark:text-slate-400 dark:hover:border-slate-700 dark:hover:bg-slate-800 dark:hover:text-white"
+                    :class="categoriesOverflow ? 'hidden sm:inline-flex' : 'hidden'"
+                    aria-label="Geser kategori ke kanan">
+                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                </svg>
+            </button>
         </div>
 
         <!-- Cards Grid -->
@@ -92,3 +140,4 @@
     </div>
 </div>
 @endsection
+
