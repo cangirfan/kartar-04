@@ -114,15 +114,6 @@
                         </svg>
                         Donasi Peduli RT
                     </button>
-                    @auth
-                        <a href="{{ route('dashboard') }}" class="block text-center w-full px-4 py-2.5 rounded-lg text-base font-bold text-white bg-indigo-600 hover:bg-indigo-700">
-                            Dashboard Admin
-                        </a>
-                    @else
-                        <a href="{{ route('login') }}" class="block text-center w-full px-4 py-2.5 rounded-lg text-base font-bold text-indigo-600 dark:text-indigo-400 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800">
-                            Login Admin
-                        </a>
-                    @endauth
                 </div>
             </div>
         </div>

@@ -42,8 +42,7 @@
         
         <!-- Category Filters -->
         <div x-init="$nextTick(() => { checkCategoryOverflow(); window.addEventListener('resize', () => checkCategoryOverflow()) })"
-             class="mx-auto flex max-w-full items-center gap-3 rounded-2xl border border-slate-100 bg-white p-3 shadow-sm transition-all duration-300 dark:border-slate-800 dark:bg-slate-900 sm:p-4"
-             :class="categoriesOverflow ? 'w-full' : 'w-fit'">
+             class="mx-auto flex w-full max-w-full items-center gap-3 overflow-hidden rounded-2xl border border-slate-100 bg-white p-3 shadow-sm transition-all duration-300 dark:border-slate-800 dark:bg-slate-900 sm:p-4">
             <span class="hidden shrink-0 text-sm font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 sm:block">Kategori:</span>
 
             <button type="button"
@@ -58,7 +57,7 @@
                 </svg>
             </button>
 
-            <div class="relative min-w-0" :class="categoriesOverflow ? 'flex-1' : 'flex-none'">
+            <div class="relative min-w-0 flex-1">
                 <div x-ref="categorySlider"
                      class="flex gap-3 overflow-x-auto scroll-smooth whitespace-nowrap px-1 py-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
                      :class="categoriesOverflow ? '' : 'justify-center'">
@@ -68,7 +67,7 @@
                     </a>
                     @foreach($categories as $category)
                         <a href="{{ url('/galeri?category=' . urlencode($category)) }}"
-                           class="inline-flex shrink-0 items-center rounded-xl px-4 py-2 text-sm font-semibold transition-all duration-200 {{ request()->query('category') === $category ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-600/10' : 'text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800' }}">
+                           class="inline-flex max-w-[70vw] shrink-0 items-center truncate rounded-xl px-4 py-2 text-sm font-semibold transition-all duration-200 sm:max-w-none {{ request()->query('category') === $category ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-600/10' : 'text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800' }}">
                             {{ $category }}
                         </a>
                     @endforeach
